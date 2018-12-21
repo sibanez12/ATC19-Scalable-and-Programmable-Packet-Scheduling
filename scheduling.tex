@@ -1,0 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Scheduling}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\todo[inline]{\\
+%What is the job of the scheduler? \\
+%What makes it difficult? \\
+%What are the typical approaches? \\
+%What are example scheduling algorithms? \\
+%Input vs Output Queuing\\
+%Work-conserving vs non-work-conserving\\
+%}
+In general terms, given a shared resource and a pool of ready candidates, scheduling consists of selecting one candidate from the pool to use the shared resource according to a selection rule (scheduling algorithm).  For example, in computing the candidates are jobs and the shared resource is the central processing unit (CPU).  Likewise in networks, the candidates are packets and the shared resource is available bandwidth or a vacant location in a packet queue.
+
+Hundreds of packet scheduling algorithms have been proposed and deployed for different packet-switched networks, ranging from simple priority scheduling to weighted-fair queueing (WFQ)~\cite{stfq} and beyond. 
+
+Packet schedulers are generally designed to be ``work conserving'' (it should not let the egress link go idle if there are packets queued for it), and ``up-to-date'' (when new packets arrive, they should be immediately considered eligible for scheduling). 
+
+To illustrate these properties, consider two examples.
+\paragraph{Work Conservation}
+Consider a traffic manager (TM) with thousands of queues. A naively designed scheduler would test each queue in a loop to determine the pool of ready (non-empty) queues.  If a cycle of checking all the queues takes longer than the time to transmit a minimum-length packet, the output would become idle.  One solution would be to maintain a list of ready queues based on packet arrival and departure events.  Then the scheduler would consider only queues that are not empty, but it still must make the next queue selection within the minimum-length packet transmission time.
+\paragraph{Up-to-date}
+In a TM with hierarchical scheduling, if a scheduling cycle is triggered by the availability of output bandwidth at the final level and each level of scheduling is triggered by a vacancy at the input of the next-level scheduler, there may be significant latency between packet arrivals at the input  and the output of the hierarchical scheduler.  In such a system, if a high priority packet arrives at the input of the TM, it might take several intermediate scheduling decisions for it to reach the output.  A solution might involve "pushing" packets through the scheduling hierarchy based on packet arrivals.  
+
+The PIFO scheduler we present here is work-conserving and makes up-to-date scheduling decisions. 
+
+
+
+
+

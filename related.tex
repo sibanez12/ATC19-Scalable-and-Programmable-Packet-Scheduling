@@ -1,0 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Related Work}
+%%%%%%%%%%%%%%%%%%%%%%
+
+Sivaraman et al.~\cite{pifo2016} present the PIFO as a useful abstraction for implementing many different scheduling algorithms. The authors also propose a hardware design for a PIFO targeting a 16-nm standard cell library. The proposed PIFO design uses per-flow FIFO queues stored in SRAM as well as a flip-flop based flow scheduler to sort the head packets of each flow. This design scales to support only about 1000 flows for an ASIC, and for an FPGA it would only be able to support about 64 flows. The reason is because the flow scheduler has very tight timing requirements which are difficult to meet on an FPGA. Additionally, the authors' proposed design makes the assumption that the rank values are monotonically increasing within a flow, which limits the granularity at which packets can be scheduled. It is for these reasons that we decided it was best to propose a completely new PIFO design for FPGAs. The PIFO design described in this paper makes no assumptions about the order of rank values within a flow and it can support as many flows as there are packet descriptors in the PIFO.
+
+There is prior work that studies designs for line rate schedulers~\cite{pipelined-heap-2007,pheap-2000}. However, these studies have typically targeted ASIC devices, and assume that the scheduler uses per flow queuing. Additionally, they generally make use of heavy pipelining. As mentioned in section \ref{sec:optimizations}, pipelining is a design approach that is orthogonal to most of the techniques described in this paper.
+
+There are few published prior works targeting FPGA, with two notable exceptions.  O'Neill et al.~\cite{belfast2011} presented a scalable modular traffic manager architecture, which was inspirational for our work, but pre-dated more modern notions of network programmability, and also targeted an FPGA of several generations ago, hence limiting the possible implementation results.  Benacer et al.~\cite{montreal2017} presented a fixed traffic manager architecture, with customization made possible through the use of high-level synthesis for a present-day FPGA.  However, this limited the possible clock rate to below 100MHz, with consequent adverse effect on line rate. 
+
+
+ 
+
+
+

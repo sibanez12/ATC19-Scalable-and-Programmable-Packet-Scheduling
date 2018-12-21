@@ -1,0 +1,8 @@
+
+\section{PIFO Queue}
+
+When using a PIFO queue, the scheduling decision is made at the time of enqueue. Packets are pushed into the queue at a location corresponding to its computed rank; packets are always dequeued from the head. This abstraction can be decomposed into two components, a programmable rank computation and a fixed scheduler. The programmable rank computation is responsible for creating the packet's priority indicator, or {\em rank}. The rank computation must be performed atomically for each packet and can be expressed in a packet processing language, such as P4~\cite{p4:2014}. The fixed scheduler then uses the resulting rank value to determine the packet's scheduling order relative to the packets currently in the queue. % This paper focuses on exploring the design of the fixed scheduling logic.
+
+For most scheduling algorithms, the relative order in which queued packets depart does not change when new packets (e.g. FIFO, strict priorities, DRR, WFQ). In other words, the scheduling order can be determined at the time the packet is enqueued. This means that the PIFO is a useful abstraction for implementing scheduling policies that have this property. 
+
+PIFOs cannot, however, be used to implement algorithms that require limiting the rate at which packets are dequeued or algorithms that need to arbitrarily change the scheduling order of packets after they have been enqueued. Despite these constraints, a hierarchical set of PIFOs can be composed into a tree structure to implement hierarchical scheduling algorithms, which can in fact cause reordering of packets that already exist in the queue.
